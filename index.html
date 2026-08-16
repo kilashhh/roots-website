@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roots — кафе у Астана Арены</title>
+<meta name="description" content="Roots — вегетарианское кафе у Астана Арены. Завтраки, боулы, салаты на фермерских продуктах. Средний чек 8 000 ₸. Бронь и доставка в WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --soil:#2a1410;
+    --soil-2:#3d1c15;
+    --paper:#f5efdf;
+    --paper-2:#ecdfb8;
+    --leaf:#7c8a45;
+    --leaf-deep:#4c5a28;
+    --leaf-soft:#c3cd93;
+    --yolk:#d9a441;
+    --clay:#8c2f1f;
+    --line: rgba(32,25,15,0.14);
+    --line-light: rgba(242,237,226,0.18);
+    --shadow: 0 18px 40px -20px rgba(32,25,15,0.35);
+    --radius: 4px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--soil);
+    font-family:'Inter', sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    letter-spacing:-0.01em;
+    margin:0;
+  }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    text-transform:uppercase;
+    letter-spacing:0.14em;
+    font-size:0.72rem;
+    font-weight:500;
+  }
+  a{ color:inherit; }
+  img{max-width:100%; display:block;}
+  button{font-family:inherit;}
+  :focus-visible{ outline:2px solid var(--yolk); outline-offset:3px; }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  /* ---------- NAV ---------- */
+  header.site{
+    position:sticky; top:0; z-index:50;
+    background:rgba(242,237,226,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 28px;
+    max-width:1120px; margin:0 auto;
+  }
+  .logo{
+    font-family:'Fraunces', serif;
+    font-size:1.35rem;
+    font-weight:600;
+    display:flex; align-items:center; gap:8px;
+  }
+  .logo svg{ width:22px; height:22px; }
+  .nav-links{
+    display:flex; gap:28px; align-items:center;
+    list-style:none; margin:0; padding:0;
+  }
+  .nav-links a{
+    font-size:0.92rem; text-decoration:none; color:var(--soil-2);
+    position:relative; padding-bottom:2px;
+  }
+  .nav-links a::after{
+    content:''; position:absolute; left:0; right:0; bottom:-2px; height:1px;
+    background:var(--leaf-deep); transform:scaleX(0); transform-origin:left;
+    transition:transform .25s ease;
+  }
+  .nav-links a:hover::after{ transform:scaleX(1); }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.82rem; text-transform:uppercase; letter-spacing:0.06em;
+    padding:12px 20px; border-radius:var(--radius);
+    text-decoration:none; border:1px solid transparent;
+    cursor:pointer; transition:transform .18s ease, background .18s ease, color .18s ease;
+    white-space:nowrap;
+  }
+  .btn-primary{ background:var(--leaf-deep); color:var(--paper); }
+  .btn-primary:hover{ background:var(--soil); transform:translateY(-1px); }
+  .btn-ghost{ border-color:var(--soil); color:var(--soil); }
+  .btn-ghost:hover{ background:var(--soil); color:var(--paper); }
+  .btn-light{ background:var(--paper); color:var(--soil); }
+  .btn-light:hover{ background:var(--yolk); }
+  .nav-cta{ display:flex; gap:12px; align-items:center; }
+  .nav-toggle{ display:none; background:none; border:none; cursor:pointer; }
+
+  /* ---------- ROOT SPINE (signature element) ---------- */
+  #spine-svg{
+    position:absolute; left:50%; top:0; width:2px; height:100%;
+    transform:translateX(-1px);
+    pointer-events:none; z-index:1;
+  }
+  #spine-svg path{
+    fill:none; stroke:url(#spineGrad); stroke-width:2;
+  }
+  .spine-host{ position:relative; }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    background:var(--soil);
+    color:var(--paper);
+    overflow:hidden;
+    padding:96px 0 120px;
+  }
+  .hero::before{
+    content:'';
+    position:absolute; inset:0;
+    background:
+      radial-gradient(circle at 82% 12%, rgba(217,164,65,0.16), transparent 45%),
+      radial-gradient(circle at 8% 88%, rgba(124,138,69,0.28), transparent 50%);
+    pointer-events:none;
+  }
+  .hero-inner{
+    position:relative; z-index:2;
+    display:grid; grid-template-columns:1.2fr 0.8fr; gap:56px; align-items:end;
+  }
+  .hero .eyebrow{ color:var(--leaf-soft); margin-bottom:18px; }
+  .hero h1{
+    font-size:clamp(2.6rem, 5.4vw, 4.4rem);
+    line-height:1.02;
+    color:var(--paper);
+  }
+  .hero h1 em{
+    font-style:italic; color:var(--yolk); font-weight:500;
+  }
+  .hero p.lead{
+    margin-top:22px; max-width:46ch;
+    color:rgba(242,237,226,0.78);
+    font-size:1.06rem;
+  }
+  .hero-cta{ display:flex; gap:14px; margin-top:34px; flex-wrap:wrap; }
+  .rating-badge{
+    display:flex; align-items:center; gap:12px;
+    background:rgba(242,237,226,0.06);
+    border:1px solid var(--line-light);
+    border-radius:var(--radius);
+    padding:16px 18px;
+    text-decoration:none;
+    color:var(--paper);
+    transition:background .2s ease;
+  }
+  .rating-badge:hover{ background:rgba(242,237,226,0.12); }
+  .rating-num{ font-family:'Fraunces', serif; font-size:2rem; font-weight:600; color:var(--yolk); line-height:1; }
+  .rating-meta{ font-size:0.82rem; color:rgba(242,237,226,0.7); }
+  .hero-side{
+    border-left:1px solid var(--line-light);
+    padding-left:32px;
+    display:flex; flex-direction:column; gap:18px;
+  }
+  .hero-tag-list{ display:flex; flex-wrap:wrap; gap:8px; }
+  .tag{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem;
+    border:1px solid var(--line-light); color:rgba(242,237,226,0.85);
+    padding:6px 10px; border-radius:999px; text-transform:lowercase;
+  }
+
+  /* ---------- SECTION SHELL ---------- */
+  section{ padding:96px 0; position:relative; }
+  section[id]{ scroll-margin-top: 84px; }
+  .section-head{
+    display:grid; grid-template-columns:220px 1fr; gap:40px;
+    margin-bottom:48px;
+  }
+  .section-head .eyebrow{ color:var(--leaf-deep); }
+  .section-head h2{ font-size:clamp(1.8rem, 3vw, 2.6rem); }
+  .section-head .desc{ max-width:56ch; color:#4b4436; margin-top:14px; }
+
+  .node{
+    position:relative;
+  }
+  .node::before{
+    content:''; position:absolute; left:-52px; top:8px;
+    width:9px; height:9px; border-radius:50%;
+    background:var(--yolk); border:2px solid var(--paper);
+    box-shadow:0 0 0 2px var(--leaf-deep);
+  }
+
+  /* ---------- ABOUT / GROWTH LIST ---------- */
+  .grow-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line);
+  }
+  .grow-item{
+    background:var(--paper); padding:30px 26px; min-height:180px;
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .grow-item svg{ width:26px; height:26px; stroke:var(--leaf-deep); }
+  .grow-item h3{ font-size:1.05rem; font-weight:600; font-family:'Inter',sans-serif; }
+  .grow-item p{ font-size:0.9rem; color:#4b4436; margin:0; }
+
+  /* ---------- CONSTRUCTOR ---------- */
+  .constructor{ background:var(--paper-2); }
+  .cons-box{
+    background:var(--paper); border:1px solid var(--line); border-radius:6px;
+    padding:38px; box-shadow:var(--shadow);
+  }
+  .cons-step{ margin-bottom:28px; }
+  .cons-step:last-of-type{ margin-bottom:0; }
+  .cons-step-label{
+    display:flex; align-items:baseline; gap:10px; margin-bottom:14px;
+  }
+  .cons-step-label .mono{ font-size:0.78rem; color:var(--leaf-deep); }
+  .cons-step-label h4{ font-family:'Inter',sans-serif; font-weight:600; font-size:1rem; margin:0; }
+  .choice-row{ display:flex; flex-wrap:wrap; gap:10px; }
+  .choice{
+    border:1px solid var(--line); background:var(--paper);
+    padding:10px 16px; border-radius:999px; font-size:0.88rem;
+    cursor:pointer; transition:all .16s ease;
+  }
+  .choice:hover{ border-color:var(--leaf-deep); }
+  .choice.active{ background:var(--leaf-deep); color:var(--paper); border-color:var(--leaf-deep); }
+  .cons-result{
+    margin-top:30px; padding-top:28px; border-top:1px dashed var(--line);
+    display:none;
+  }
+  .cons-result.show{ display:grid; grid-template-columns:96px 1fr auto; gap:20px; align-items:center; }
+  .cons-result-img{ width:96px; height:96px; border-radius:8px; overflow:hidden; flex:0 0 96px; background:var(--paper-2); }
+  .cons-result-img img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .cons-result .r-eyebrow{ color:var(--clay); }
+  .cons-result h3{ font-size:1.4rem; margin-top:6px; }
+  .cons-result .r-price{ font-family:'IBM Plex Mono', monospace; font-size:1.3rem; white-space:nowrap; }
+  .cons-hint{ font-size:0.85rem; color:#786f5c; margin-top:8px; }
+
+  /* ---------- MENU ---------- */
+  .menu-cat{ margin-bottom:56px; }
+  .menu-cat:last-child{ margin-bottom:0; }
+  .menu-cat-title{
+    display:flex; align-items:baseline; gap:14px; margin-bottom:22px;
+    border-bottom:1px solid var(--line); padding-bottom:12px;
+  }
+  .menu-cat-title h3{ font-size:1.3rem; }
+  .menu-cat-title .count{ font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:#8a806a; }
+  .menu-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .menu-card{
+    border:1px solid var(--line); border-radius:8px; overflow:hidden;
+    background:var(--paper);
+    transition:transform .22s ease, box-shadow .22s ease;
+  }
+  .menu-card:hover{ transform:translateY(-4px); box-shadow:var(--shadow); }
+  .menu-card-img{ aspect-ratio:4/3; overflow:hidden; background:var(--paper-2); }
+  .menu-card-img img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .35s ease; }
+  .menu-card:hover .menu-card-img img{ transform:scale(1.06); }
+  .menu-card-body{ padding:16px 18px; display:flex; flex-direction:column; gap:8px; }
+  .menu-card-body .name{ font-size:0.95rem; line-height:1.35; }
+  .menu-card-body .price{ font-family:'IBM Plex Mono', monospace; font-size:0.92rem; color:var(--leaf-deep); font-weight:500; }
+
+  /* ---------- SERVICES STRIP ---------- */
+  .strip{ background:var(--soil); color:var(--paper); }
+  .strip-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+    background:var(--line-light); border:1px solid var(--line-light);
+  }
+  .strip-item{
+    background:var(--soil); padding:26px 22px; text-align:left;
+  }
+  .strip-item .mono{ font-size:0.72rem; color:var(--leaf-soft); }
+  .strip-item p{ margin:8px 0 0; font-size:0.95rem; }
+
+  /* ---------- REVIEWS ---------- */
+  .review-wrap{
+    display:grid; grid-template-columns:0.9fr 1.1fr; gap:56px; align-items:center;
+  }
+  .review-score{
+    text-align:center; border:1px solid var(--line); padding:40px 20px; border-radius:6px;
+    background:var(--paper-2);
+  }
+  .review-score .num{ font-family:'Fraunces',serif; font-size:4rem; font-weight:600; color:var(--leaf-deep); line-height:1; }
+  .stars{ margin:14px 0; letter-spacing:4px; color:var(--yolk); font-size:1.1rem; }
+  .review-score .count{ font-family:'IBM Plex Mono', monospace; font-size:0.82rem; color:#786f5c; }
+  .review-copy h2{ font-size:clamp(1.6rem,2.6vw,2.2rem); margin-bottom:16px; }
+  .review-copy p{ color:#4b4436; margin-bottom:22px; max-width:52ch; }
+
+  /* ---------- LOCATION ---------- */
+  .loc-grid{ display:grid; grid-template-columns:1fr 1fr; gap:56px; }
+  .transport-list{ list-style:none; margin:0; padding:0; }
+  .transport-list li{
+    display:flex; justify-content:space-between; padding:14px 0;
+    border-bottom:1px solid var(--line); font-size:0.95rem;
+  }
+  .transport-list .t-meta{ font-family:'IBM Plex Mono', monospace; font-size:0.82rem; color:#786f5c; }
+  .park-note{ margin-top:18px; font-size:0.9rem; color:#4b4436; }
+
+  /* ---------- FOOTER / FINAL CTA ---------- */
+  footer{ background:var(--soil-2); color:var(--paper); padding:80px 0 40px; }
+  .cta-final{
+    text-align:center; padding-bottom:64px; border-bottom:1px solid var(--line-light);
+    margin-bottom:40px;
+  }
+  .cta-final h2{ color:var(--paper); font-size:clamp(1.9rem,4vw,3rem); max-width:16ch; margin:0 auto 22px; }
+  .cta-final .hero-cta{ justify-content:center; }
+  .foot-grid{ display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:40px; font-size:0.9rem; }
+  .foot-grid h4{ font-family:'IBM Plex Mono', monospace; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--leaf-soft); margin-bottom:14px; }
+  .foot-grid a{ text-decoration:none; color:rgba(242,237,226,0.82); }
+  .foot-grid ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px; }
+  .foot-bottom{ margin-top:50px; font-size:0.78rem; color:rgba(242,237,226,0.5); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+
+  .reveal{ opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+
+  /* ---------- PHOTO SLOTS (placeholders for real photos) ---------- */
+  /* Чтобы вставить фото: удалите содержимое .photo-slot и добавьте
+     <img src="ваше-фото.jpg" alt="..."> — object-fit:cover уже настроен. */
+  .photo-slot{
+    position:relative;
+    border:1.5px dashed rgba(32,25,15,0.28);
+    border-radius:6px;
+    background:
+      repeating-linear-gradient(135deg, rgba(32,25,15,0.035) 0 10px, transparent 10px 20px),
+      var(--paper-2);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:8px; text-align:center; overflow:hidden; color:#8a806a;
+  }
+  .photo-slot img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .photo-slot svg{ width:26px; height:26px; stroke:#a89d80; }
+  .photo-slot .ps-label{ font-family:'IBM Plex Mono', monospace; font-size:0.7rem; letter-spacing:0.04em; padding:0 12px; }
+
+  .gallery-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; }
+  .gallery-grid .photo-slot{ aspect-ratio:5/4; }
+
+  .about-media{ display:grid; grid-template-columns:0.9fr 1.1fr; gap:48px; align-items:center; margin-bottom:48px; }
+  .about-media .photo-slot{ aspect-ratio:4/5; }
+
+  .menu-cat-title{ align-items:center; }
+
+  @media (max-width: 860px){
+    .gallery-grid{ grid-template-columns:1fr 1fr; }
+    .about-media{ grid-template-columns:1fr; }
+    .about-media .photo-slot{ aspect-ratio:16/9; }
+  }
+
+  @media (max-width: 860px){
+    .nav-links{ display:none; }
+    .nav-toggle{ display:block; }
+    .hero-inner{ grid-template-columns:1fr; }
+    .hero-side{ border-left:none; border-top:1px solid var(--line-light); padding-left:0; padding-top:24px; }
+    .section-head{ grid-template-columns:1fr; }
+    .node::before{ display:none; }
+    .grow-grid{ grid-template-columns:1fr; }
+    .menu-list{ grid-template-columns:1fr; }
+    .menu-grid{ grid-template-columns:1fr 1fr; }
+    .strip-grid{ grid-template-columns:1fr 1fr; }
+    .review-wrap{ grid-template-columns:1fr; }
+    .loc-grid{ grid-template-columns:1fr; }
+    .foot-grid{ grid-template-columns:1fr; }
+    #spine-svg{ display:none; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; scroll-behavior:auto !important; }
+  }
+  @media (max-width: 560px){
+    .menu-grid{ grid-template-columns:1fr; }
+    .cons-result.show{ grid-template-columns:72px 1fr; }
+    .cons-result.show > div:last-child{ grid-column:1 / -1; text-align:left !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <nav class="nav">
+    <a href="#top" class="logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v11"/><path d="M12 8c-2 0-4-2-4-4"/><path d="M12 11c2 0 4-2 4-4"/><path d="M12 14c-3 0-5 2-6 5"/><path d="M12 14c3 0 5 2 6 5"/></svg>
+      Roots
+    </a>
+    <ul class="nav-links">
+      <li><a href="#gallery">Фото</a></li>
+      <li><a href="#about">О кафе</a></li>
+      <li><a href="#constructor">Конструктор</a></li>
+      <li><a href="#menu">Меню</a></li>
+      <li><a href="#reviews">Отзывы</a></li>
+      <li><a href="#location">Как добраться</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a class="btn btn-primary" href="https://api.whatsapp.com/send/?phone=77761111566&text=%D0%94%D0%BE%D0%B1%D1%80%D1%8B%D0%B9%20%D0%B4%D0%B5%D0%BD%D1%8C!%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B7%D0%B0%D0%B1%D1%80%D0%BE%D0%BD%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%20%D1%81%D1%82%D0%BE%D0%BB%D0%B8%D0%BA%20%D0%B2%20Roots" target="_blank" rel="noopener">Забронировать</a>
+    </div>
+  </nav>
+</header>
+
+<div class="spine-host" id="top">
+<svg id="spine-svg" preserveAspectRatio="none">
+  <defs>
+    <linearGradient id="spineGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d9a441"/>
+      <stop offset="50%" stop-color="#7c8a45"/>
+      <stop offset="100%" stop-color="#8c2f1f"/>
+    </linearGradient>
+  </defs>
+  <path id="spine-path" d="M1,0 L1,3000"/>
+</svg>
+
+<!-- ---------- HERO ---------- -->
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div>
+      <div class="eyebrow">Roots · кафе у Астана Арены</div>
+      <h1>Тарелка<br>растёт <em>снизу вверх</em></h1>
+      <p class="lead">Боулы, салаты и завтраки на фермерских продуктах — вегетарианское меню с рыбой, птицей и уткой для тех, кому этого не хватает. Средний чек — 8 000 ₸, места хватит на компанию до 60 человек.</p>
+      <div class="hero-cta">
+        <a class="btn btn-light" href="https://api.whatsapp.com/send/?phone=77761111566&text=%D0%94%D0%BE%D0%B1%D1%80%D1%8B%D0%B9%20%D0%B4%D0%B5%D0%BD%D1%8C!%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B7%D0%B0%D0%B1%D1%80%D0%BE%D0%BD%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%20%D1%81%D1%82%D0%BE%D0%BB%D0%B8%D0%BA%20%D0%B2%20Roots" target="_blank" rel="noopener">Забронировать столик</a>
+        <a class="btn btn-ghost" style="border-color:var(--line-light); color:var(--paper);" href="#menu">Смотреть меню</a>
+      </div>
+    </div>
+    <div class="hero-side">
+      <a class="rating-badge" href="https://2gis.kz/astana/firm/70000001094393018/tab/reviews" target="_blank" rel="noopener">
+        <span class="rating-num">4.7</span>
+        <span class="rating-meta">671 отзыв<br>на 2ГИС · подтверждено</span>
+      </a>
+      <div class="hero-tag-list">
+        <span class="tag">вегетарианское меню</span>
+        <span class="tag">завтраки весь день</span>
+        <span class="tag">можно с собакой</span>
+        <span class="tag">доставка</span>
+        <span class="tag">wi-fi</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ---------- GALLERY (photo placeholders) ---------- -->
+<section id="gallery" style="padding:64px 0;">
+  <div class="wrap" style="max-width:1280px;">
+    <div class="gallery-grid reveal">
+      <div class="photo-slot"><img src="images/interior-bar.jpg" alt="Барная стойка Roots"></div>
+      <div class="photo-slot"><img src="images/roots-bottles.jpg" alt="Детокс-напитки Roots"></div>
+      <div class="photo-slot"><img src="images/roots-smoothies.jpg" alt="Смузи Roots"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ---------- ABOUT ---------- -->
+<section id="about">
+  <div class="wrap">
+    <div class="about-media reveal">
+      <div class="photo-slot">
+        <img src="images/interior-hall.jpg" alt="Зал Roots">
+      </div>
+      <div class="node">
+        <div class="eyebrow">Что мы выращиваем</div>
+        <h2 style="margin-top:14px;">Кафе для тех, кто считает,<br>что вкусное бывает лёгким</h2>
+        <p class="desc">Roots — это про баланс: сытный завтрак и лёгкий боул на одной странице меню, фермерские овощи рядом с уткой конфи. Никаких компромиссов в духе «либо вкусно, либо полезно».</p>
+      </div>
+    </div>
+
+    <div class="grow-grid reveal">
+      <div class="grow-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6M12 22v-6M2 12h6M22 12h-6"/><circle cx="12" cy="12" r="3"/></svg>
+        <h3>Фермерские продукты</h3>
+        <p>Томаты, зелень и сезонные ягоды — в основе завтраков, каш и салатов.</p>
+      </div>
+      <div class="grow-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18.4 8.6 12 15l-3-3-4.4 4.4"/></svg>
+        <h3>Меню на любой запрос</h3>
+        <p>Вегетарианские блюда, европейская кухня, форель, утка и фалафель — в одном меню.</p>
+      </div>
+      <div class="grow-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7a8 8 0 0 1 16 0v7"/><path d="M4 14h16"/></svg>
+        <h3>Место для компании</h3>
+        <p>До 60 посадочных мест, бронь столиков, Wi-Fi для клиентов и можно с собакой.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ---------- CONSTRUCTOR ---------- -->
+<section id="constructor" class="constructor">
+  <div class="wrap">
+    <div class="section-head node">
+      <div class="eyebrow reveal">Конструктор тарелки</div>
+      <div class="reveal">
+        <h2>Не знаете, что выбрать?<br>Соберём тарелку вместе</h2>
+        <p class="desc">Ответьте на два вопроса — подберём подходящее блюдо из меню Roots и сразу дадим ссылку на заказ в WhatsApp.</p>
+      </div>
+    </div>
+
+    <div class="cons-box reveal">
+      <div class="cons-step">
+        <div class="cons-step-label"><span class="mono">01</span><h4>Что сегодня хочется?</h4></div>
+        <div class="choice-row" data-group="mood">
+          <button class="choice" data-value="light">Что-то лёгкое</button>
+          <button class="choice" data-value="hearty">Сытно и надолго</button>
+          <button class="choice" data-value="sweet">Сладкое</button>
+        </div>
+      </div>
+      <div class="cons-step">
+        <div class="cons-step-label"><span class="mono">02</span><h4>Есть предпочтения по составу?</h4></div>
+        <div class="choice-row" data-group="base">
+          <button class="choice" data-value="veg">Без мяса и рыбы</button>
+          <button class="choice" data-value="fish">С рыбой</button>
+          <button class="choice" data-value="meat">С мясом или уткой</button>
+          <button class="choice" data-value="any">Не важно</button>
+        </div>
+      </div>
+
+      <div class="cons-result" id="consResult">
+        <div class="cons-result-img"><img id="resImg" src="" alt=""></div>
+        <div>
+          <div class="eyebrow r-eyebrow">Мы бы предложили</div>
+          <h3 id="resDish">—</h3>
+          <p class="cons-hint" id="resHint"></p>
+        </div>
+        <div style="text-align:right;">
+          <div class="r-price" id="resPrice">—</div>
+          <a class="btn btn-primary" style="margin-top:12px;" id="resOrder" href="#" target="_blank" rel="noopener">Заказать в WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ---------- MENU ---------- -->
+<section id="menu">
+  <div class="wrap">
+    <div class="section-head node">
+      <div class="eyebrow reveal">Меню</div>
+      <div class="reveal">
+        <h2>21 блюдо, которые<br>стоит попробовать</h2>
+        <p class="desc">Полное меню — на месте и в приложении 2ГИС. Ниже — актуальные позиции и цены.</p>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="menu-cat">
+        <div class="menu-cat-title"><h3>Завтраки</h3><span class="count">6 позиций</span></div>
+        <div class="menu-grid">
+          <div class="menu-card"><div class="menu-card-img"><img src="images/kurinye-kolbaski.jpg" alt="Куриные колбаски с луковым вареньем и яйцом всмятку" loading="lazy"></div><div class="menu-card-body"><span class="name">Куриные колбаски с луковым вареньем и яйцом всмятку</span><span class="price">4 690 ₸</span></div></div>
+          <div class="menu-card"><div class="menu-card-img"><img src="images/syrniki.jpg" alt="Сырники со сметаной и маринованными ягодами" loading="lazy"></div><div class="menu-card-body"><span class="name">Сырники со сметаной и маринованными ягодами</span><span class="price">3 990 ₸</span></div></div>
+          <div class="menu-card"><div class="menu-card-img"><img src="images/yogurt-granola.jpg" alt="Йогурт с гранолой, сезонными ягодами и фруктами" loading="lazy"></div><div class="menu-card-body"><span class="name">Йогурт с гранолой, сезонными ягодами и фруктами</span><span class="price">4 690 ₸</span></div></div>
+          <div class="menu-card"><div class="menu-card-img"><img src="images/vafli-shokoladnye.jpg" alt="Шоколадные вафли из рисовой муки со сливочным мороженым" loading="lazy"></div><div class="menu-card-body"><span class="name">Шоколадные вафли из рисовой муки со сливочным мороженым</span><span class="price">3 990 ₸</span></div></div>
+          <div class="menu-card"><div class="menu-card-img"><img src="images/yaico-poshot.jpg" alt="Яйцо пашот с зелёными вафлями и маринованной форелью" loading="lazy"></div><div class="menu-card-body"><span class="name">Яйцо пашот с зелёными вафлями и маринованной форелью</span><span class="price">4 990 ₸</span></div></div>
+          <div class="menu-card"><div class="menu-card-img"><img src="images/oladyi-cukini.jpg" alt="Оладьи из цукини и брокколи с копчёной индейкой" loading="lazy"></div><div class="menu-card-body"><span class="name">Оладьи из цукини и брокколи с копчёной индейкой</span><span class="price">4 690 ₸</span></div></div>
+        </div>
+      </div>
+
+      <div class="menu-cat">
+        <div class="menu-cat-title"><h3>Горячие блюда</h3><span class="count">3 позиции</span></div>
+        <div class="menu-grid">
+          <div class="menu-card"><div class="menu-card-img"><img src="images/pasta-moreprodukty.jpg" alt="Пряная паста с морепродуктами" loading="lazy"></div><div class="menu-card-body"><span class="name">Пряная паста с морепродуктами</span><span class="price">5 990 ₸</span></div></div>
+          <div class="menu-card"><div class="menu-card-img"><img src="images/burger-falafel.jpg" alt="Бургер с фалафелем и соусом тахини" loading="lazy"></div><div class="menu-card-body"><span class="name">Бургер с фалафелем и соусом тахини</span><span class="price">4 790 ₸</span></div></div>
+          <div class="menu-card"><div class="menu-card-img"><img src="images/utinaya-nozhka.jpg" alt="Утиная ножка конфи с картофельным пюре" loading="lazy"></div><div class="menu-card-body"><span class="name">Утиная ножка конфи с картофельным пюре</span><span class="price">6 390 ₸</span></div></div>
+        </div>
+      </div>
+
+      <div class="menu-cat">
+        <div class="menu-cat-title"><h3>Салаты и боулы</h3><span class="count">4 позиции</span></div>
+        <div class="menu-grid">
+          <div class="menu-card"><div class="menu-card-img"><img src="images/boul-forel.jpg" alt="Боул с форелью и чили айоли соусом" loading="lazy"></div><div class="menu-card-body"><span class="name">Боул с форелью и чили айоли соусом</span><span class="price">5 990 ₸</span></div></div>
+          <div class="menu-card"><div class="menu-card-img"><img src="images/boul-falafel.jpg" alt="Фалафель боул с ореховым соусом" loading="lazy"></div><div class="menu-card-body"><span class="name">Фалафель боул с ореховым соусом</span><span class="price">5 690 ₸</span></div></div>
+          <div class="menu-card"><div class="menu-card-img"><img src="images/salat-zeleny.jpg" alt="Зелёный салат с лимонной заправкой" loading="lazy"></div><div class="menu-card-body"><span class="name">Зелёный салат с лимонной заправкой</span><span class="price">4 690 ₸</span></div></div>
+          <div class="menu-card"><div class="menu-card-img"><img src="images/salat-grechesky.jpg" alt="Греческий салат" loading="lazy"></div><div class="menu-card-body"><span class="name">Греческий салат</span><span class="price">4 690 ₸</span></div></div>
+        </div>
+      </div>
+
+      <div class="menu-cat">
+        <div class="menu-cat-title"><h3>Каша</h3><span class="count">3 позиции</span></div>
+        <div class="menu-grid">
+          <div class="menu-card"><div class="menu-card-img"><img src="images/kasha-ovsyanaya.jpg" alt="Овсяная каша с иримшиком и сезонными ягодами" loading="lazy"></div><div class="menu-card-body"><span class="name">Овсяная каша с иримшиком и сезонными ягодами</span><span class="price">3 990 ₸</span></div></div>
+          <div class="menu-card"><div class="menu-card-img"><img src="images/kasha-pshennaya.jpg" alt="Пшённая каша с медовой запечённой тыквой и финиками" loading="lazy"></div><div class="menu-card-body"><span class="name">Пшённая каша с медовой запечённой тыквой и финиками</span><span class="price">3 990 ₸</span></div></div>
+          <div class="menu-card"><div class="menu-card-img"><img src="images/kasha-risovaya.jpg" alt="Рисовая каша с бананом, орехами и ягодами" loading="lazy"></div><div class="menu-card-body"><span class="name">Рисовая каша с бананом, орехами и ягодами</span><span class="price">3 990 ₸</span></div></div>
+        </div>
+      </div>
+
+      <div class="menu-cat">
+        <div class="menu-cat-title"><h3>Закуски</h3><span class="count">3 позиции</span></div>
+        <div class="menu-grid">
+          <div class="menu-card"><div class="menu-card-img"><img src="images/humus.jpg" alt="Хумус с печёными овощами, соусом песто и лепёшкой" loading="lazy"></div><div class="menu-card-body"><span class="name">Хумус с печёными овощами, соусом песто и лепёшкой</span><span class="price">3 990 ₸</span></div></div>
+          <div class="menu-card"><div class="menu-card-img"><img src="images/pashtet.jpg" alt="Паштет из печени цыплёнка с апельсиновым джемом и бриошью" loading="lazy"></div><div class="menu-card-body"><span class="name">Паштет из печени цыплёнка с апельсиновым джемом и бриошью</span><span class="price">3 990 ₸</span></div></div>
+          <div class="menu-card"><div class="menu-card-img"><img src="images/tomaty-fermerskie.jpg" alt="Фермерские томаты с соусом песто и гречневым хлебом" loading="lazy"></div><div class="menu-card-body"><span class="name">Фермерские томаты с соусом песто и гречневым хлебом</span><span class="price">4 290 ₸</span></div></div>
+        </div>
+      </div>
+
+      <div class="menu-cat">
+        <div class="menu-cat-title"><h3>Десерты</h3><span class="count">2 позиции</span></div>
+        <div class="menu-grid">
+          <div class="menu-card"><div class="menu-card-img"><img src="images/zapekanka.jpg" alt="Творожная запеканка с маринованными лесными ягодами" loading="lazy"></div><div class="menu-card-body"><span class="name">Творожная запеканка с маринованными лесными ягодами</span><span class="price">2 990 ₸</span></div></div>
+          <div class="menu-card"><div class="menu-card-img"><img src="images/matcha-fondan.jpg" alt="Матча фондан из белого шоколада с мороженым" loading="lazy"></div><div class="menu-card-body"><span class="name">Матча фондан из белого шоколада с мороженым</span><span class="price">3 690 ₸</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ---------- SERVICES STRIP ---------- -->
+<section class="strip" style="padding:0;">
+  <div class="wrap" style="padding-top:56px; padding-bottom:56px;">
+    <div class="strip-grid reveal">
+      <div class="strip-item"><div class="mono">Доставка</div><p>Заказ навынос и доставка — уточняйте зону и время в WhatsApp.</p></div>
+      <div class="strip-item"><div class="mono">Wi-Fi</div><p>Бесплатный Wi-Fi для клиентов — можно поработать за завтраком.</p></div>
+      <div class="strip-item"><div class="mono">Оплата</div><p>Картой, наличными, через банк или по QR-коду.</p></div>
+      <div class="strip-item"><div class="mono">С собакой</div><p>Приходите с питомцем — в кафе можно находиться с собакой.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ---------- REVIEWS ---------- -->
+<section id="reviews">
+  <div class="wrap review-wrap">
+    <div class="review-score reveal">
+      <div class="num">4.7</div>
+      <div class="stars">★★★★★</div>
+      <div class="count">671 отзыв · подтверждённый рейтинг 2ГИС</div>
+    </div>
+    <div class="review-copy reveal">
+      <h2>671 человек уже<br>оставили отзыв</h2>
+      <p>Рейтинг подтверждён 2ГИС и складывается из реальных визитов гостей. Прочитайте отзывы целиком или оставьте свой после визита.</p>
+      <a class="btn btn-ghost" href="https://2gis.kz/astana/firm/70000001094393018/tab/reviews" target="_blank" rel="noopener">Читать отзывы на 2ГИС</a>
+    </div>
+  </div>
+</section>
+
+<!-- ---------- LOCATION ---------- -->
+<section id="location" style="background:var(--paper-2);">
+  <div class="wrap loc-grid">
+    <div class="reveal">
+      <div class="eyebrow node">Как добраться</div>
+      <h2 style="margin-top:14px;">Рядом с Астана Ареной</h2>
+      <p style="color:#4b4436; margin-top:14px; max-width:48ch;">Кафе находится в шаговой доступности от Астана Арены. Точный адрес, режим работы и построение маршрута — на карте 2ГИС.</p>
+      <a class="btn btn-primary" style="margin-top:20px;" href="https://2gis.kz/astana/firm/70000001094393018" target="_blank" rel="noopener">Открыть на карте 2ГИС</a>
+      <p class="park-note">Рядом — 9 парковочных мест.</p>
+    </div>
+    <div class="reveal">
+      <ul class="transport-list">
+        <li><span>Остановка «Улы дала»</span><span class="t-meta">6 мин · 600 м</span></li>
+        <li><span>Остановка «Астана Арена»</span><span class="t-meta">7 мин · 700 м</span></li>
+        <li><span>Остановка «Дворец единоборств»</span><span class="t-meta">20 мин · 1.5 км</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ---------- FOOTER ---------- -->
+<footer>
+  <div class="wrap">
+    <div class="cta-final reveal">
+      <div class="eyebrow" style="color:var(--leaf-soft); margin-bottom:16px;">Roots ждёт вас</div>
+      <h2>Забронируйте столик<br>на сегодняшний завтрак</h2>
+      <div class="hero-cta">
+        <a class="btn btn-light" href="https://api.whatsapp.com/send/?phone=77761111566&text=%D0%94%D0%BE%D0%B1%D1%80%D1%8B%D0%B9%20%D0%B4%D0%B5%D0%BD%D1%8C!%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B7%D0%B0%D0%B1%D1%80%D0%BE%D0%BD%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%20%D1%81%D1%82%D0%BE%D0%BB%D0%B8%D0%BA%20%D0%B2%20Roots" target="_blank" rel="noopener">Написать в WhatsApp</a>
+        <a class="btn btn-ghost" style="border-color:var(--line-light); color:var(--paper);" href="https://2gis.kz/astana/firm/70000001094393018" target="_blank" rel="noopener">Страница на 2ГИС</a>
+      </div>
+    </div>
+
+    <div class="foot-grid">
+      <div>
+        <div class="logo" style="color:var(--paper);">Roots</div>
+        <p style="color:rgba(242,237,226,0.65); margin-top:14px; max-width:34ch;">Вегетарианское кафе европейской кухни у Астана Арены. Завтраки, боулы, салаты и десерты.</p>
+      </div>
+      <div>
+        <h4>Разделы</h4>
+        <ul>
+          <li><a href="#about">О кафе</a></li>
+          <li><a href="#constructor">Конструктор тарелки</a></li>
+          <li><a href="#menu">Меню</a></li>
+          <li><a href="#reviews">Отзывы</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Контакты</h4>
+        <ul>
+          <li><a href="https://api.whatsapp.com/send/?phone=77761111566" target="_blank" rel="noopener">WhatsApp</a></li>
+          <li><a href="https://2gis.kz/astana/firm/70000001094393018" target="_blank" rel="noopener">2ГИС</a></li>
+          <li><a href="https://2gis.kz/astana/firm/70000001094393018/tab/questions" target="_blank" rel="noopener">Вопросы и ответы</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <span>© Roots · Кафе, Астана</span>
+      <span>Средний чек 8 000 ₸ · До 60 мест</span>
+    </div>
+  </div>
+</div>
+</footer>
+
+<script>
+  // Reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el=>io.observe(el));
+
+  // Root spine draw-on-scroll
+  const spinePath = document.getElementById('spine-path');
+  const spineSvg = document.getElementById('spine-svg');
+  function sizeSpine(){
+    const host = document.querySelector('.spine-host');
+    const h = host.offsetHeight;
+    spineSvg.setAttribute('viewBox', `0 0 2 ${h}`);
+    spinePath.setAttribute('d', `M1,0 L1,${h}`);
+    const len = h;
+    spinePath.style.strokeDasharray = len;
+    spinePath.style.strokeDashoffset = len;
+  }
+  function updateSpine(){
+    const host = document.querySelector('.spine-host');
+    const h = host.offsetHeight;
+    const scrolled = window.scrollY;
+    const winH = window.innerHeight;
+    const progress = Math.min(1, Math.max(0, scrolled / (h - winH * 0.4)));
+    const len = h;
+    spinePath.style.strokeDashoffset = len * (1 - progress);
+  }
+  window.addEventListener('resize', sizeSpine);
+  window.addEventListener('scroll', updateSpine, { passive:true });
+  sizeSpine(); updateSpine();
+
+  // ---- Constructor logic ----
+  const menuData = [
+    { name:"Йогурт с гранолой, сезонными ягодами и фруктами", price:4690, mood:["light"], base:["veg"], img:"images/yogurt-granola.jpg" },
+    { name:"Зелёный салат с лимонной заправкой", price:4690, mood:["light"], base:["veg"], img:"images/salat-zeleny.jpg" },
+    { name:"Хумус с печёными овощами, соусом песто и лепёшкой", price:3990, mood:["light"], base:["veg"], img:"images/humus.jpg" },
+    { name:"Боул с форелью и чили айоли соусом", price:5990, mood:["light","hearty"], base:["fish"], img:"images/boul-forel.jpg" },
+    { name:"Яйцо пашот с зелёными вафлями и маринованной форелью", price:4990, mood:["light","hearty"], base:["fish"], img:"images/yaico-poshot.jpg" },
+    { name:"Утиная ножка конфи с картофельным пюре", price:6390, mood:["hearty"], base:["meat"], img:"images/utinaya-nozhka.jpg" },
+    { name:"Куриные колбаски с луковым вареньем и яйцом всмятку", price:4690, mood:["hearty"], base:["meat"], img:"images/kurinye-kolbaski.jpg" },
+    { name:"Оладьи из цукини и брокколи с копчёной индейкой", price:4690, mood:["hearty"], base:["meat"], img:"images/oladyi-cukini.jpg" },
+    { name:"Бургер с фалафелем и соусом тахини", price:4790, mood:["hearty"], base:["veg"], img:"images/burger-falafel.jpg" },
+    { name:"Фалафель боул с ореховым соусом", price:5690, mood:["hearty"], base:["veg"], img:"images/boul-falafel.jpg" },
+    { name:"Пряная паста с морепродуктами", price:5990, mood:["hearty"], base:["fish"], img:"images/pasta-moreprodukty.jpg" },
+    { name:"Творожная запеканка с маринованными лесными ягодами", price:2990, mood:["sweet"], base:["veg"], img:"images/zapekanka.jpg" },
+    { name:"Матча фондан из белого шоколада с мороженым", price:3690, mood:["sweet"], base:["veg"], img:"images/matcha-fondan.jpg" },
+    { name:"Сырники со сметаной и маринованными ягодами", price:3990, mood:["sweet"], base:["veg"], img:"images/syrniki.jpg" },
+    { name:"Шоколадные вафли из рисовой муки со сливочным мороженым", price:3990, mood:["sweet"], base:["veg"], img:"images/vafli-shokoladnye.jpg" },
+  ];
+
+  const state = { mood:null, base:null };
+  const groups = document.querySelectorAll('[data-group]');
+  groups.forEach(group=>{
+    group.querySelectorAll('.choice').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        group.querySelectorAll('.choice').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        state[group.dataset.group] = btn.dataset.value;
+        tryRecommend();
+      });
+    });
+  });
+
+  function tryRecommend(){
+    if(!state.mood || !state.base) return;
+    let pool = menuData.filter(d => d.mood.includes(state.mood));
+    let filtered = state.base === 'any' ? pool : pool.filter(d => d.base.includes(state.base));
+    if(filtered.length === 0) filtered = pool;
+    if(filtered.length === 0) filtered = menuData;
+    const pick = filtered[Math.floor(Math.random() * filtered.length)];
+
+    document.getElementById('resDish').textContent = pick.name;
+    document.getElementById('resPrice').textContent = pick.price.toLocaleString('ru-RU') + ' ₸';
+    document.getElementById('resHint').textContent = 'Подобрано под ваш запрос из актуального меню Roots';
+    document.getElementById('resImg').src = pick.img;
+    document.getElementById('resImg').alt = pick.name;
+
+    const msg = encodeURIComponent(`Добрый день! Хочу заказать «${pick.name}» из меню Roots.`);
+    document.getElementById('resOrder').href = `https://api.whatsapp.com/send/?phone=77761111566&text=${msg}`;
+
+    document.getElementById('consResult').classList.add('show');
+  }
+</script>
+
+</body>
+</html>
